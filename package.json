@@ -1,0 +1,10 @@
+{
+    "name": "Aquino API server",
+    "version": "0.1.0",
+    "description": "Serveur API de l'application Aquino, qui permet de gérer à distance son aquarium",
+
+    "dependencies": {
+        "express": "4.0.0",
+        "request": "2.34.0"
+    }
+}
