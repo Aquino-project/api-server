@@ -219,6 +219,46 @@ var application = {
             );
         });
 
+        
+        /**
+         *
+         * Recuperes les heures deja existantes
+         *
+         */
+        app.get('/feed/hours', function (req, res)
+        {
+            application.output('Recuperation des heures de nourrissage en cours...');
+
+            // On inclue le model de base de donnees Feed
+            var feedModel = require('./lib/models/feed.js').init(connection);
+            
+            feedModel.getAll(
+                // Si tout ce passe bien
+                function (heures) {
+                    application.successOutput('OK');
+
+                    // On retourne le resultat a l'utilisateur
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            heures: heures
+                        })
+                    );
+                },
+
+                // Si une erreur survient
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
 
 
 
