@@ -261,6 +261,84 @@ var application = {
         });
 
 
+        /**
+         *
+         * Suppression d'une heure pour la nourriture
+         *
+         */
+        app.delete('/feed/delete', function (req, res)
+        {
+            application.output('Suppression d\'une heure de nourrissage en cours...');
+
+            // On recupere l'heure et la minute a supprimer
+            var minute = req.query.minute;
+            var hour = req.query.hour;
+
+            // On inclue le model de base de donnees Feed
+            var feedModel = require('./lib/models/feed.js').init(connection);
+            
+            feedModel.delete({
+                hour: hour,
+                minute: minute
+            },
+                // Si tout ce passe bien
+                function () {
+                    application.successOutput('OK');
+
+                    // On retourne le resultat a l'utilisateur
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'Heure correctement supprimée'
+                        })
+                    );
+
+                    application.output('Suppression de l\'heure sur Aquino');
+
+                    // On prepare la requete
+                    var request = Curl.request({
+                        method: 'POST',
+                        url: aquariumIP +"/feed/delete",
+                        data: {
+                            heure: req.body.heure,
+                            minute: req.body.minute
+                        },
+                        timeout: 30
+                    });
+
+                    // On envoie les infos a l'aquarium
+                    request(function (error, response) {
+                        if (!error) {
+                            application.successOutput('OK');
+                            return true;
+                        }
+
+                        application.errorOutput('ERREUR -- impossible de joindre le serveur');
+                        return false;
+                    });
+
+                    return false;
+                },
+
+                // Si une erreur survient
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
+
+        /*********************/
+        /**    END FEED     **/
+        /*********************/
+
+
 
         // On lance le serveur
         app.listen(1337);
