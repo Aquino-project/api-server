@@ -143,7 +143,82 @@ var application = {
             });
         });
 
-        
+        /**
+         *
+         * Ajout d'une heure pour la nourriture
+         *
+         */
+        app.post('/feed', function (req, res)
+        {
+            application.output('Ajout d\'une heure de nourrissage en cours...');
+
+            // On recupere l'heure et la minute postee
+            var minute = req.body.minute;
+            var hour = req.body.hour;
+
+            // On inclue le model de base de donnees Feed
+            var feedModel = require('./lib/models/feed.js').init(connection);
+            
+            // On ajoute l'heure a la base de donnees
+            feedModel.add({
+                hour: hour,
+                minute: minute
+            },
+                // Si tout ce passe bien
+                function () {
+                    application.successOutput('OK');
+
+                    // On retourne le resultat a l'utilisateur
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'Heure correctement enregistrés'
+                        })
+                    );
+
+                    application.output('Envoie de l\'heure à Aquino');
+
+                    // On prepare la requete
+                    var request = Curl.request({
+                        method: 'POST',
+                        url: aquariumIP +"/feed/add",
+                        data: {
+                            heure: req.body.heure,
+                            minute: req.body.minute
+                        },
+                        timeout: 30
+                    });
+
+                    // On envoie l'heure a l'aquarium
+                    request(function (error, data) {
+                        console.log(data);
+                        if (!error) {
+                            application.successOutput('OK');
+                            return true;
+                        }
+
+                        application.errorOutput('ERREUR -- impossible de joindre le serveur');
+                        return false;
+                    });
+
+                    return false;
+                },
+
+                // Si il y a un probleme
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    // On retourne l'erreur
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
+
 
 
 
