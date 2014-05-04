@@ -397,6 +397,31 @@ var application = {
 
 
 
+        /*********************/
+        /**      ALERTS     **/
+        /*********************/
+        /*********************/
+        /**   POUR NICOLAS  **/
+        /*********************/
+
+        /**
+         *
+         * Reglage de la luminosite des leds
+         *
+         */
+        app.post('/alerts', function (req, res)
+        {
+            application.output('Reception de l\'alerte en cours...');
+
+            console.log(req);
+        });
+
+        /*********************/
+        /**    END ALERTS   **/
+        /*********************/
+
+
+
         // On lance le serveur
         app.listen(1337);
     },
