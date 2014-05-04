@@ -340,6 +340,63 @@ var application = {
 
 
 
+        /*********************/
+        /**      LIGHT      **/
+        /*********************/
+        /*********************/
+        /**   POUR MORGAN   **/
+        /*********************/
+
+        /**
+         *
+         * Reglage de la luminosite des leds
+         *
+         */
+        app.put('/light', function (req, res)
+        {
+            application.output('Envoie de la luminosité en cours...');
+
+            // On prepare la requete
+            var request = Curl.request({
+                method: 'POST',
+                url: aquariumIP +"/light",
+                data: {
+                    percent: req.body.percent
+                }
+            });
+
+            request(function (error) {
+                if (!error) {
+                    application.successOutput('OK');
+
+                    // On affiche le resultat
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'La luminosité a bien été modifiée'
+                        })
+                    );
+                } else {
+                    application.errorOutput('ERREUR');
+
+                    // On affiche le resultat
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: 'La luminosité n\'a pas pu être modifiée'
+                        })
+                    );
+                }
+            });
+
+        });
+
+        /*********************/
+        /**    END LIGHT    **/
+        /*********************/
+
+
+
         // On lance le serveur
         app.listen(1337);
     },
