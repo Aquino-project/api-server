@@ -5,6 +5,11 @@
 
     "dependencies": {
         "express": "4.0.0",
-        "request": "2.34.0"
+        "body-parser": "*",
+        "method-override": "*",
+        "curlrequest": "*",
+        "request": "2.34.0",
+        "md5": "1.0.0",
+        "mysql": "*"
     }
 }
