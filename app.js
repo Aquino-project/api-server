@@ -356,13 +356,18 @@ var application = {
         {
             application.output('Envoie de la luminosité en cours...');
 
+            var bas = req.body.bas;
+            var haut = req.body.haut;
+
             // On prepare la requete
             var request = Curl.request({
                 method: 'POST',
                 url: aquariumIP +"/light",
                 data: {
-                    percent: req.body.percent
-                }
+                    "haut": haut,
+                    "bas": bas
+                },
+                timeout: 30
             });
 
             request(function (error) {
@@ -413,7 +418,40 @@ var application = {
         {
             application.output('Reception de l\'alerte en cours...');
 
-            console.log(req);
+            var titre = req.body.titre;
+            var message = req.body.message;
+            var alertsModel = require('./lib/models/alerts.js').init(connection);
+
+            // On ajoute l'alerte a la base de donnees
+            alertsModel.add({
+                title: titre,
+                message: message
+            },
+                // En cas de succes
+                function () {
+                    application.successOutput('OK');
+
+                    // On retourne le resultat a l'utilisateur
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'Heure correctement enregistrés'
+                        })
+                    );
+                },
+
+                // En cas d'erreur
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
         });
 
         /*********************/
