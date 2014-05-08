@@ -38,12 +38,9 @@ app.use(methodOverride());
  * CONFIGURARION MYSQL
  *
  */
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'root',
-    database : 'aquino'
-});
+var connection = mysql.createConnection(
+    require('./config.js')
+);
 
 
 /**
@@ -439,7 +436,7 @@ var application = {
                         })
                     );
                 },
-
+                
                 // En cas d'erreur
                 function (infos) {
                     application.errorOutput('ERREUR -- '+ infos.message);
