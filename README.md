@@ -2,7 +2,7 @@
 
 ## Auteur de la partie
 
-* Romain QUILLIOT
+* [Romain QUILLIOT](http://twitter.com/Romainjeff)
 
 
 ## Pré-requis
