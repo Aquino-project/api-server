@@ -110,36 +110,7 @@ var application = {
 
             application.output('Don de la nourriture en cours...');
 
-            // On prepare la requete
-            var request = Curl.request({
-                url: aquariumIP +"/feed/now",
-                timeout: 30
-            });
-
-            // On envoie la requete a l'aquarium
-            request(function (error, response) {
-                if (!error) {
-                    application.successOutput('OK');
-
-                    // On affiche le resultat
-                    res.send(
-                        jsonFormat.format({
-                            error: false,
-                            message: 'La nourriture a correctement été donnée'
-                        })
-                    );
-                } else {
-                    application.errorOutput('ERREUR');
-
-                    // On affiche le resultat
-                    res.send(
-                        jsonFormat.format({
-                            error: true,
-                            message: 'La nourriture n\'a pas été donnée'
-                        })
-                    );
-                }
-            });
+            application.sendSuccess(res, "Nourriture correctement donnée");
         });
 
         /**
@@ -179,28 +150,7 @@ var application = {
 
                     application.output('Envoie de l\'heure à Aquino');
 
-                    // On prepare la requete
-                    var request = Curl.request({
-                        method: 'POST',
-                        url: aquariumIP +"/feed/add",
-                        data: {
-                            heure: req.body.heure,
-                            minute: req.body.minute
-                        },
-                        timeout: 30
-                    });
-
-                    // On envoie l'heure a l'aquarium
-                    request(function (error, data) {
-                        console.log(data);
-                        if (!error) {
-                            application.successOutput('OK');
-                            return true;
-                        }
-
-                        application.errorOutput('ERREUR -- impossible de joindre le serveur');
-                        return false;
-                    });
+                    application.sendSuccess(res, "Heures de nourrissage correctement ajoutée");
 
                     return false;
                 },
@@ -300,27 +250,7 @@ var application = {
 
                     application.output('Suppression de l\'heure sur Aquino');
 
-                    // On prepare la requete
-                    var request = Curl.request({
-                        method: 'POST',
-                        url: aquariumIP +"/feed/delete",
-                        data: {
-                            heure: req.body.heure,
-                            minute: req.body.minute
-                        },
-                        timeout: 30
-                    });
-
-                    // On envoie les infos a l'aquarium
-                    request(function (error, response) {
-                        if (!error) {
-                            application.successOutput('OK');
-                            return true;
-                        }
-
-                        application.errorOutput('ERREUR -- impossible de joindre le serveur');
-                        return false;
-                    });
+                    application.sendSuccess(res, "Heures de nourrissage correctement supprimée");
 
                     return false;
                 },
@@ -361,45 +291,12 @@ var application = {
         {
             application.initHeaders(res);
 
-            application.output('Envoie de la luminosité en cours...');
+            application.output('Envoie des heures d\'éclairage en cours...');
 
             var bas = req.body.bas;
             var haut = req.body.haut;
 
-            // On prepare la requete
-            var request = Curl.request({
-                method: 'POST',
-                url: aquariumIP +"/light",
-                data: {
-                    "haut": haut,
-                    "bas": bas
-                },
-                timeout: 30
-            });
-
-            request(function (error) {
-                if (!error) {
-                    application.successOutput('OK');
-
-                    // On affiche le resultat
-                    res.send(
-                        jsonFormat.format({
-                            error: false,
-                            message: 'La luminosité a bien été modifiée'
-                        })
-                    );
-                } else {
-                    application.errorOutput('ERREUR');
-
-                    // On affiche le resultat
-                    res.send(
-                        jsonFormat.format({
-                            error: true,
-                            message: 'La luminosité n\'a pas pu être modifiée'
-                        })
-                    );
-                }
-            });
+            application.sendSuccess(res, "Heures d'éclairage correctement modifiées");
 
         });
 
@@ -418,7 +315,7 @@ var application = {
 
         /**
          *
-         * Quand l'aquarium envoie des alertes
+         * Reglage de la luminosite des leds
          *
          */
         app.post('/alerts', function (req, res)
@@ -444,151 +341,9 @@ var application = {
                     res.send(
                         jsonFormat.format({
                             error: false,
-                            message: 'Alerte correctement ajoutée'
+                            message: 'Heure correctement enregistrés'
                         })
                     );
-                },
-                
-                // En cas d'erreur
-                function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
-                    
-                    res.send(
-                        jsonFormat.format({
-                            error: true,
-                            message: infos.message
-                        })
-                    );
-                }
-            );
-        });
-
-        /**
-         *
-         * Reglage du seuil d'eau
-         *
-         */
-        app.post('/seuils', function (req, res)
-        {
-            application.initHeaders(res);
-            
-            application.output('Envoie du seuil en cours...');
-
-            var seuil = req.body.seuil;
-            var seuilsModel = require('./lib/models/seuils.js').init(connection);
-
-            // On ajoute l'alerte a la base de donnees
-            seuilsModel.update({
-                seuil: seuil
-            },
-                // En cas de succes
-                function () {
-                    application.successOutput('OK');
-
-                    // On prepare la requete
-                    var request = Curl.request({
-                        method: 'POST',
-                        url: aquariumIP +"/seuils",
-                        data: {
-                            "seuil": seuil
-                        },
-                        timeout: 30
-                    });
-
-                    request(function (error) {
-                        if (!error) {
-                            application.successOutput('OK');
-
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: false,
-                                    message: 'Le seuil de niveau d\'eau a bien été modifié'
-                                })
-                            );
-                        } else {
-                            application.errorOutput('ERREUR');
-
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: true,
-                                    message: 'Le seuil de niveau d\'eau n\'a pas pu être modifiée'
-                                })
-                            );
-                        }
-                    });
-                },
-                
-                // En cas d'erreur
-                function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
-                    
-                    res.send(
-                        jsonFormat.format({
-                            error: true,
-                            message: infos.message
-                        })
-                    );
-                }
-            );
-        });
-
-        /**
-         *
-         * Reglage du numero de telephone
-         *
-         */
-        app.post('/phonenumber', function (req, res)
-        {
-            application.initHeaders(res);
-            
-            application.output('Envoie du numero de telephone en cours...');
-
-            var number = req.body.number;
-            var phoneModel = require('./lib/models/phone.js').init(connection);
-
-            // On ajoute l'alerte a la base de donnees
-            phoneModel.update({
-                number: number
-            },
-                // En cas de succes
-                function () {
-                    application.successOutput('OK');
-
-                    // On prepare la requete
-                    var request = Curl.request({
-                        method: 'POST',
-                        url: aquariumIP +"/phonenumber",
-                        data: {
-                            "number": number
-                        },
-                        timeout: 30
-                    });
-
-                    request(function (error) {
-                        if (!error) {
-                            application.successOutput('OK');
-
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: false,
-                                    message: 'Le numero de telephone a bien été modifié'
-                                })
-                            );
-                        } else {
-                            application.errorOutput('ERREUR');
-
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: true,
-                                    message: 'Le numero de telephone n\'a pas pu être modifiée'
-                                })
-                            );
-                        }
-                    });
                 },
                 
                 // En cas d'erreur
@@ -673,6 +428,40 @@ var application = {
     {
         console.log(" %s !".inverse.green, message);
         console.log('');
+    },
+
+    /**
+     *
+     * Retourne un succes
+     *
+     */
+    sendSuccess: function (res, message)
+    {
+        this.successOutput("OK");
+
+        res.send(
+            jsonFormat.format({
+                error: false,
+                message: message
+            })
+        );
+    },
+
+    /**
+     *
+     * Retourne une erreur
+     *
+     */
+    sendError: function (res, message)
+    {
+        this.errorOutput("ERREUR");
+
+        res.send(
+            jsonFormat.format({
+                error: true,
+                message: message
+            })
+        );
     }
 
 };
