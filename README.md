@@ -1,4 +1,4 @@
-# Aquino
+# Aquino API server
 
 ## Auteur de la partie
 
