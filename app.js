@@ -106,6 +106,8 @@ var application = {
          */
         app.get('/feed/now', function (req, res)
         {
+            application.initHeaders(res);
+
             application.output('Don de la nourriture en cours...');
 
             // On prepare la requete
@@ -147,6 +149,8 @@ var application = {
          */
         app.post('/feed', function (req, res)
         {
+            application.initHeaders(res);
+
             application.output('Ajout d\'une heure de nourrissage en cours...');
 
             // On recupere l'heure et la minute postee
@@ -224,6 +228,8 @@ var application = {
          */
         app.get('/feed/hours', function (req, res)
         {
+            application.initHeaders(res);
+
             application.output('Recuperation des heures de nourrissage en cours...');
 
             // On inclue le model de base de donnees Feed
@@ -265,6 +271,8 @@ var application = {
          */
         app.delete('/feed/delete', function (req, res)
         {
+            application.initHeaders(res);
+
             application.output('Suppression d\'une heure de nourrissage en cours...');
 
             // On recupere l'heure et la minute a supprimer
@@ -351,6 +359,8 @@ var application = {
          */
         app.put('/light', function (req, res)
         {
+            application.initHeaders(res);
+
             application.output('Envoie de la luminosité en cours...');
 
             var bas = req.body.bas;
@@ -413,6 +423,8 @@ var application = {
          */
         app.post('/alerts', function (req, res)
         {
+            application.initHeaders(res);
+            
             application.output('Reception de l\'alerte en cours...');
 
             var titre = req.body.titre;
