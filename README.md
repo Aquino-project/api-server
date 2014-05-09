@@ -14,9 +14,12 @@
 
 1. ``` git clone git@github.com:Aquino-project/web-application.git ```
 2. ``` cd path/to/the/api/server ```
-3. Renommer ``` config.dist.js ``` end ``` config.js ```
-4. Configurer la connexion MySQL dans ``` config.js ```
-5. Executez ``` node app ```
+3. Executez ``` npm install ``` pour installer les dépendances
+4. Créez une nouvelle base de données et importez le fichier ``` Structure.sql ```
+5. Renommer ``` config.dist.js ``` en ``` config.js ```
+6. Configurer la connexion MySQL dans ``` config.js ```
+7. Executez ``` node app ```
+8. Enjoy !
 
 ## License
 
