@@ -265,14 +265,14 @@ var application = {
          * Suppression d'une heure pour la nourriture
          *
          */
-        app.delete('/feed/delete', function (req, res)
+        app.post('/feed/delete', function (req, res)
         {
             application.initHeaders(res);
 
             application.output('Suppression d\'une heure de nourrissage en cours...');
 
             // On recupere l'heure et la minute a supprimer
-            var hour = req.query.hour;
+            var hour = req.body.hour;
 
             // On inclue le model de base de donnees Feed
             var feedModel = require('./lib/models/feed.js').init(connection);
