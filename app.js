@@ -478,9 +478,8 @@ var application = {
             var seuilsModel = require('./lib/models/seuils.js').init(connection);
 
             // On ajoute l'alerte a la base de donnees
-            seuilsModel.update({
-                seuil: seuil
-            },
+            seuilsModel.update(seuil,
+                
                 // En cas de succes
                 function () {
                     application.successOutput('OK');
@@ -539,19 +538,17 @@ var application = {
          * Reglage du numero de telephone
          *
          */
-        app.post('/phonenumber', function (req, res)
+        app.put('/phonenumber', function (req, res)
         {
             application.initHeaders(res);
             
             application.output('Envoie du numero de telephone en cours...');
 
             var number = req.body.number;
-            var phoneModel = require('./lib/models/phone.js').init(connection);
 
             // On ajoute l'alerte a la base de donnees
-            phoneModel.update({
-                number: number
-            },
+            configs.updateNumber(number,
+
                 // En cas de succes
                 function () {
                     application.successOutput('OK');
