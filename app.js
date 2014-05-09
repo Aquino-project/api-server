@@ -422,9 +422,7 @@ var application = {
          *
          */
         app.post('/alerts', function (req, res)
-        {
-            application.initHeaders(res);
-            
+        {            
             application.output('Reception de l\'alerte en cours...');
 
             var titre = req.body.titre;
@@ -538,16 +536,16 @@ var application = {
          * Reglage du numero de telephone
          *
          */
-        app.put('/phonenumber', function (req, res)
+        app.put('/email', function (req, res)
         {
             application.initHeaders(res);
             
-            application.output('Envoie du numero de telephone en cours...');
+            application.output('Envoie de l\'email en cours...');
 
-            var number = req.body.number;
+            var email = req.body.email;
 
             // On ajoute l'alerte a la base de donnees
-            configs.updateNumber(number,
+            configs.updateEmail(email,
 
                 // En cas de succes
                 function () {
@@ -556,9 +554,9 @@ var application = {
                     // On prepare la requete
                     var request = Curl.request({
                         method: 'POST',
-                        url: aquariumIP +"/phonenumber",
+                        url: aquariumIP +"/email",
                         data: {
-                            "number": number
+                            "email": email
                         },
                         timeout: 30
                     });
@@ -571,7 +569,7 @@ var application = {
                             res.send(
                                 jsonFormat.format({
                                     error: false,
-                                    message: 'Le numero de telephone a bien été modifié'
+                                    message: 'Le mail a bien été modifié'
                                 })
                             );
                         } else {
@@ -581,7 +579,7 @@ var application = {
                             res.send(
                                 jsonFormat.format({
                                     error: true,
-                                    message: 'Le numero de telephone n\'a pas pu être modifiée'
+                                    message: 'Le mail n\'a pas pu être modifiée'
                                 })
                             );
                         }
