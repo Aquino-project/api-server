@@ -16,8 +16,9 @@
 2. ``` cd path/to/the/api/server ```
 3. Executez ``` npm install ``` pour installer les dépendances
 4. Créez une nouvelle base de données et importez le fichier ``` Structure.sql ```
-5. Renommer ``` config.dist.js ``` en ``` config.js ```
-6. Configurer la connexion MySQL dans ``` config.js ```
+5. Renommez ``` config.dist.js ``` en ``` config.js ```
+6. Configurez la connexion MySQL dans ``` config.js ```
+7. Configurez la connexion SMTP dans ``` config.js ```
 7. Executez ``` node app ```
 8. Enjoy !
 
