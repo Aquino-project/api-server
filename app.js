@@ -359,40 +359,63 @@ var application = {
             var hour_end = req.body.hour_end;
             var hour_start = req.body.hour_start;
 
-            // On prepare la requete
-            var request = Curl.request({
-                method: 'POST',
-                url: aquariumIP +"/light",
-                data: {
-                    "haut": hour_start,
-                    "bas": hour_end
+            var lightModel = require('./lib/models/light.js').init(connection);
+
+            lightModel.update({
+                hour_start: hour_start,
+                hour_end: hour_end
+            },
+                // En cas de succes
+                function () {
+                    // On prepare la requete
+                    var request = Curl.request({
+                        method: 'POST',
+                        url: aquariumIP +"/light",
+                        data: {
+                            "haut": hour_start,
+                            "bas": hour_end
+                        },
+                        timeout: 30
+                    });
+
+                    request(function (error) {
+                        if (!error) {
+                            application.successOutput('OK');
+
+                            // On affiche le resultat
+                            res.send(
+                                jsonFormat.format({
+                                    error: false,
+                                    message: 'Les heures ont bien été modifiées'
+                                })
+                            );
+                        } else {
+                            application.errorOutput('ERREUR');
+
+                            // On affiche le resultat
+                            res.send(
+                                jsonFormat.format({
+                                    error: true,
+                                    message: 'Les heures n\'ont pas pu être modifiées'
+                                })
+                            );
+                        }
+                    });
                 },
-                timeout: 30
-            });
-
-            request(function (error) {
-                if (!error) {
-                    application.successOutput('OK');
-
-                    // On affiche le resultat
-                    res.send(
-                        jsonFormat.format({
-                            error: false,
-                            message: 'La luminosité a bien été modifiée'
-                        })
-                    );
-                } else {
+                // En cas d'erreur
+                function (message)
+                {
                     application.errorOutput('ERREUR');
 
                     // On affiche le resultat
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: 'La luminosité n\'a pas pu être modifiée'
+                            message: message
                         })
                     );
                 }
-            });
+            );
 
         });
     
