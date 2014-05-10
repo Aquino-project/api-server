@@ -22,6 +22,15 @@ var jsonFormat      = require('./lib/controllers/json.js');
  */
 var app  = express();
 var date = new Date();
+var initHeaders = function (req, res, next)
+{
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE");
+    res.header("Content-type", "application/json");
+
+    next();
+}
 
 
 /**
@@ -31,6 +40,7 @@ var date = new Date();
  */
 app.use(bodyParser());
 app.use(methodOverride());
+app.use(initHeaders);
 
 
 /**
@@ -106,8 +116,6 @@ var application = {
          */
         app.get('/feed/now', function (req, res)
         {
-            application.initHeaders(res);
-
             application.output('Don de la nourriture en cours...');
 
             // On prepare la requete
@@ -149,8 +157,6 @@ var application = {
          */
         app.post('/feed', function (req, res)
         {
-            application.initHeaders(res);
-
             application.output('Ajout d\'une heure de nourrissage en cours...');
 
             // On recupere l'heure et la minute postee
@@ -224,8 +230,6 @@ var application = {
          */
         app.get('/feed/hours', function (req, res)
         {
-            application.initHeaders(res);
-
             application.output('Recuperation des heures de nourrissage en cours...');
 
             // On inclue le model de base de donnees Feed
@@ -267,8 +271,6 @@ var application = {
          */
         app.post('/feed/delete', function (req, res)
         {
-            application.initHeaders(res);
-
             application.output('Suppression d\'une heure de nourrissage en cours...');
 
             // On recupere l'heure et la minute a supprimer
@@ -352,8 +354,6 @@ var application = {
          */
         app.put('/light', function (req, res)
         {
-            application.initHeaders(res);
-
             application.output('Envoie de la luminosité en cours...');
 
             var bas = req.body.bas;
@@ -460,9 +460,7 @@ var application = {
          *
          */
         app.post('/seuils', function (req, res)
-        {
-            application.initHeaders(res);
-            
+        {            
             application.output('Envoie du seuil en cours...');
 
             var seuil = req.body.seuil;
@@ -526,13 +524,11 @@ var application = {
 
         /**
          *
-         * Reglage du numero de telephone
+         * Reglage du mail
          *
          */
         app.put('/email', function (req, res)
-        {
-            application.initHeaders(res);
-            
+        {            
             application.output('Envoie de l\'email en cours...');
 
             var email = req.body.email;
@@ -544,39 +540,49 @@ var application = {
                 function () {
                     application.successOutput('OK');
 
-                    // On prepare la requete
-                    var request = Curl.request({
-                        method: 'POST',
-                        url: aquariumIP +"/email",
-                        data: {
-                            "email": email
-                        },
-                        timeout: 30
-                    });
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'Le mail a bien été modifié'
+                        })
+                    );
+                },
+                
+                // En cas d'erreur
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
 
-                    request(function (error) {
-                        if (!error) {
-                            application.successOutput('OK');
+        /**
+         *
+         * Recuperation du mail
+         *
+         */
+        app.get('/email', function (req, res)
+        {            
+            application.output('Recuperation de l\'email en cours...');
 
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: false,
-                                    message: 'Le mail a bien été modifié'
-                                })
-                            );
-                        } else {
-                            application.errorOutput('ERREUR');
+            // On ajoute l'alerte a la base de donnees
+            configs.getEmail(
+                // En cas de succes
+                function (email) {
+                    application.successOutput('OK');
 
-                            // On affiche le resultat
-                            res.send(
-                                jsonFormat.format({
-                                    error: true,
-                                    message: 'Le mail n\'a pas pu être modifiée'
-                                })
-                            );
-                        }
-                    });
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            email: email
+                        })
+                    );
                 },
                 
                 // En cas d'erreur
@@ -601,19 +607,6 @@ var application = {
 
         // On lance le serveur
         app.listen(1337);
-    },
-
-    /**
-     *
-     * Autorise les requetes AJAX
-     * @param object res L'objet Response de Express
-     *
-     */
-    initHeaders: function (res)
-    {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With");
-        res.header("Content-type", "application/json");
     },
 
     /**
