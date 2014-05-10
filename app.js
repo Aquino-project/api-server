@@ -395,7 +395,12 @@ var application = {
             });
 
         });
-
+    
+        /**
+         *
+         * Recuperation des heures d'eclairages
+         *
+         */
         app.get('/light', function (req, res)
         {
             application.output('Envoie de la luminosité en cours...');
