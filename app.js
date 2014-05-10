@@ -263,6 +263,46 @@ var application = {
             );
         });
 
+        /**
+         *
+         * Recuperes la prochaine heure de nourrissage
+         *
+         */
+        app.get('/feed/hour/next', function (req, res)
+        {
+            application.output('Recuperation de la prochaine heure de nourrissage en cours...');
+
+            // On inclue le model de base de donnees Feed
+            var feedModel = require('./lib/models/feed.js').init(connection);
+            
+            feedModel.getNext(date.getHours(),
+                // Si tout ce passe bien
+                function (heure) {
+                    application.successOutput('OK');
+
+                    // On retourne le resultat a l'utilisateur
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            heure: heure
+                        })
+                    );
+                },
+
+                // Si une erreur survient
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
+
 
         /**
          *
@@ -354,7 +394,7 @@ var application = {
          */
         app.put('/light', function (req, res)
         {
-            application.output('Envoie de la luminosité en cours...');
+            application.output('Envoie des heures en cours...');
 
             var hour_end = req.body.hour_end;
             var hour_start = req.body.hour_start;
@@ -403,7 +443,7 @@ var application = {
                     });
                 },
                 // En cas d'erreur
-                function (message)
+                function (infos)
                 {
                     application.errorOutput('ERREUR');
 
@@ -411,7 +451,7 @@ var application = {
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
@@ -426,7 +466,7 @@ var application = {
          */
         app.get('/light', function (req, res)
         {
-            application.output('Envoie de la luminosité en cours...');
+            application.output('Envoie des heures en cours...');
 
             var lightModel = require('./lib/models/light.js').init(connection);
 
@@ -444,14 +484,14 @@ var application = {
                 },
 
                 // En cas d'echec
-                function (message) {
+                function (infos) {
                     application.errorOutput('ERREUR');
 
                     // On affiche le resultat
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
@@ -541,13 +581,13 @@ var application = {
                 },
 
                 // En cas d'echec
-                function (message) {
+                function (infos) {
                     application.errorOutput('ERREUR');
 
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
@@ -579,13 +619,13 @@ var application = {
                 },
 
                 // En cas d'echec
-                function (message) {
+                function (infos) {
                     application.errorOutput('ERREUR');
 
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
@@ -619,13 +659,13 @@ var application = {
                 },
 
                 // En cas d'echec
-                function (message) {
+                function (infos) {
                     application.errorOutput('ERREUR');
 
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
@@ -854,13 +894,13 @@ var application = {
                 },
 
                 // En cas d'echec
-                function (message) {
+                function (infos) {
                     application.errorOutput('ERREUR');
 
                     res.send(
                         jsonFormat.format({
                             error: true,
-                            message: message
+                            message: infos.message
                         })
                     );
                 }
