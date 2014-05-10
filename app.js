@@ -564,6 +564,46 @@ var application = {
 
         /**
          *
+         * Recuperation du seuil d'eau
+         *
+         */
+        app.get('/seuils', function (req, res)
+        {            
+            application.output('Envoie du seuil en cours...');
+
+            var seuilsModel = require('./lib/models/seuils.js').init(connection);
+
+            // On ajoute l'alerte a la base de donnees
+            seuilsModel.get(
+                // En cas de succes
+                function (seuil) {
+                    application.successOutput('OK');
+
+                    // On affiche le resultat
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            seuil: seuil
+                        })
+                    );
+                },
+                
+                // En cas d'erreur
+                function (infos) {
+                    application.errorOutput('ERREUR -- '+ infos.message);
+                    
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
+
+        /**
+         *
          * Recuperation du mail
          *
          */
