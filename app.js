@@ -415,7 +415,7 @@ var application = {
                     res.send(
                         jsonFormat.format({
                             error: false,
-                            message: rows
+                            hours: rows
                         })
                     );
                 },
