@@ -396,6 +396,41 @@ var application = {
 
         });
 
+        app.get('/light', function (req, res)
+        {
+            application.output('Envoie de la luminosité en cours...');
+
+            var lightModel = require('./lib/models/light.js').init(connection);
+
+            lightModel.get(
+                // En cas de succes
+                function (rows) {
+                    application.successOutput('OK');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: rows
+                        })
+                    );
+                },
+
+                // En cas d'echec
+                function (message) {
+                    application.errorOutput('ERREUR');
+
+                    // On affiche le resultat
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: message
+                        })
+                    );
+                }
+            );
+
+        });
+
         /*********************/
         /**    END LIGHT    **/
         /*********************/
