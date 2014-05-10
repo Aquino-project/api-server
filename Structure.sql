@@ -32,7 +32,7 @@ CREATE TABLE `configs` (
 --  Records of `configs`
 -- ----------------------------
 BEGIN;
-INSERT INTO `configs` VALUES ('098f6bcd4621d373cade4e832627b4f6', 'romain.addweb@gmail.com', '192.168.0.200');
+INSERT INTO `configs` VALUES ('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'romain.addweb@gmail.com', '192.168.0.200');
 COMMIT;
 
 -- ----------------------------
