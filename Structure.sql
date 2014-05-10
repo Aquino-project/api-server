@@ -11,7 +11,7 @@
  Target Server Version : 50533
  File Encoding         : utf-8
 
- Date: 05/09/2014 12:06:01 PM
+ Date: 05/10/2014 22:29:38 PM
 */
 
 SET NAMES utf8;
@@ -32,7 +32,7 @@ CREATE TABLE `configs` (
 --  Records of `configs`
 -- ----------------------------
 BEGIN;
-INSERT INTO `configs` VALUES ('', 'romain.addweb@gmail.com', '192.168.1.92');
+INSERT INTO `configs` VALUES ('098f6bcd4621d373cade4e832627b4f6', 'romain.addweb@gmail.com', '192.168.0.200');
 COMMIT;
 
 -- ----------------------------
@@ -40,16 +40,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `hours_feed`;
 CREATE TABLE `hours_feed` (
-  `hour` int(10) unsigned NOT NULL,
-  `minute` int(10) unsigned NOT NULL
+  `hour` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
---  Records of `hours_feed`
--- ----------------------------
-BEGIN;
-INSERT INTO `hours_feed` VALUES ('7', '50'), ('7', '30'), ('7', '20'), ('7', '0'), ('7', '10');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `lights`
@@ -61,6 +53,13 @@ CREATE TABLE `lights` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+--  Records of `lights`
+-- ----------------------------
+BEGIN;
+INSERT INTO `lights` VALUES ('7', '18');
+COMMIT;
+
+-- ----------------------------
 --  Table structure for `notifications`
 -- ----------------------------
 DROP TABLE IF EXISTS `notifications`;
@@ -69,13 +68,13 @@ CREATE TABLE `notifications` (
   `title` varchar(45) NOT NULL,
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 --  Records of `notifications`
 -- ----------------------------
 BEGIN;
-INSERT INTO `notifications` VALUES ('1', 'Test', 'defr'), ('2', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('3', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('4', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('5', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('6', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('7', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('8', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('9', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('10', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('11', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('12', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('13', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('14', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('15', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('16', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('17', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('18', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('19', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('20', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('21', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('22', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('23', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('24', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('25', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('26', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('27', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('28', 'Niveau d\'eau', 'Niveau d\'eau trop bas'), ('29', 'Niveau d\'eau', 'Niveau d\'eau trop bas');
+INSERT INTO `notifications` VALUES ('5', 'Test', 'Essais'), ('6', 'Test', 'Essais'), ('7', 'Test', 'Essais'), ('8', 'Test', 'Essais'), ('9', 'Test', 'Essais'), ('10', 'Test', 'Essais');
 COMMIT;
 
 -- ----------------------------
@@ -90,7 +89,7 @@ CREATE TABLE `water_level` (
 --  Records of `water_level`
 -- ----------------------------
 BEGIN;
-INSERT INTO `water_level` VALUES ('0');
+INSERT INTO `water_level` VALUES ('40');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
