@@ -389,7 +389,7 @@ var application = {
 
         /**
          *
-         * Reglage de la luminosite des leds
+         * Reglage des heures d'éclairage
          *
          */
         app.put('/light', function (req, res)
@@ -904,6 +904,25 @@ var application = {
                         })
                     );
                 }
+            );
+
+        });
+
+        /**
+         *
+         * Recuperation de l'IP de la camera
+         *
+         */
+        app.get('/camera/address', function(req, res)
+        {
+            application.output("Envoie de l'ip de la camera...");
+            application.successOutput("OK");
+
+            res.send(
+                jsonFormat.format({
+                    error: false,
+                    ip: cameraIP
+                })
             );
 
         });
