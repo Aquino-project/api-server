@@ -19,8 +19,9 @@
 5. Renommez ``` config.dist.js ``` en ``` config.js ```
 6. Configurez la connexion MySQL dans ``` config.js ```
 7. Configurez la connexion SMTP dans ``` config.js ```
-7. Executez ``` node app ```
-8. Enjoy !
+8. Executez ``` node app ```
+9. Le mot de passe par defaut de l'application est ``` test ```
+10. Enjoy !
 
 ## License
 
