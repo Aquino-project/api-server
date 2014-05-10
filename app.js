@@ -208,7 +208,7 @@ var application = {
                             return true;
                         }
 
-                        application.errorOutput('ERREUR -- impossible de joindre le serveur');
+                        application.errorOutput('ERREUR');
                         return false;
                     });
 
@@ -217,7 +217,7 @@ var application = {
 
                 // Si il y a un probleme
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     // On retourne l'erreur
                     res.send(
@@ -259,7 +259,7 @@ var application = {
 
                 // Si une erreur survient
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -299,7 +299,7 @@ var application = {
 
                 // Si une erreur survient
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -370,7 +370,7 @@ var application = {
 
                 // Si une erreur survient
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -453,7 +453,7 @@ var application = {
                 // En cas d'erreur
                 function (infos)
                 {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     // On affiche le resultat
                     res.send(
@@ -493,7 +493,7 @@ var application = {
 
                 // En cas d'echec
                 function (infos) {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     // On affiche le resultat
                     res.send(
@@ -588,7 +588,7 @@ var application = {
                 
                 // En cas d'erreur
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -625,7 +625,7 @@ var application = {
 
                 // En cas d'echec
                 function (infos) {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     res.send(
                         jsonFormat.format({
@@ -663,7 +663,7 @@ var application = {
 
                 // En cas d'echec
                 function (infos) {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     res.send(
                         jsonFormat.format({
@@ -703,7 +703,7 @@ var application = {
 
                 // En cas d'echec
                 function (infos) {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     res.send(
                         jsonFormat.format({
@@ -772,7 +772,7 @@ var application = {
                 
                 // En cas d'erreur
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -812,7 +812,7 @@ var application = {
                 
                 // En cas d'erreur
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -852,7 +852,7 @@ var application = {
                 
                 // En cas d'erreur
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -889,7 +889,7 @@ var application = {
                 
                 // En cas d'erreur
                 function (infos) {
-                    application.errorOutput('ERREUR -- '+ infos.message);
+                    application.errorOutput('ERREUR - '+ infos.message);
                     
                     res.send(
                         jsonFormat.format({
@@ -938,7 +938,7 @@ var application = {
 
                 // En cas d'echec
                 function (infos) {
-                    application.errorOutput('ERREUR');
+                    application.errorOutput('ERREUR - '+ infos.message);
 
                     res.send(
                         jsonFormat.format({
