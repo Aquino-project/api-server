@@ -8,7 +8,7 @@ var bodyParser      = require('body-parser');
 var methodOverride  = require('express-method-override');
 var http            = require('http');
 var Curl            = require('curlrequest');
-var md5             = require('MD5');
+var sha1            = require('sha1');
 var mysql           = require('mysql');
 var colors          = require('colors');
 var querystring     = require('querystring');
@@ -921,7 +921,7 @@ var application = {
             application.output("Modification du mot de passe...");
 
             var password = req.body.password;
-            password = md5(password);
+            password = sha1(password);
 
             configs.updatePassword(password,
                 // En cas de succes
@@ -971,6 +971,109 @@ var application = {
         /*********************/
         /**    END APPLI    **/
         /*********************/
+
+
+
+        /*********************/
+        /**    APPLI LOGIN  **/
+        /*********************/
+
+        app.post('/token/verify', function (req, res)
+        {
+            application.output("Verification du token...");
+
+            var token = req.body.token;
+
+            configs.isEqualToken(token,
+                // Le token est valide
+                function () {
+                    application.successOutput("OK");
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: "Le token est valide"
+                        })
+                    );
+
+                },
+                // Le token est invalide
+                function () {
+                    application.successOutput("ERREUR");
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: "Le token est invalide"
+                        })
+                    );
+
+                }
+            );
+            
+        });
+
+        app.post('/token/request', function (req, res)
+        {
+            application.output("Verification du mot de passe...");
+
+            var password = sha1(req.body.password);
+
+            // On verifie le mot de passe
+            configs.isEqualPassword(password,
+                // Le mot de passe est valide
+                function () {
+                    application.successOutput("OK");
+
+                    application.output("Generation du token...");
+
+                    var rand = Math.floor(Math.random() * 10 + 1);
+                    var token = sha1((date.getSeconds() * date.getMinutes() * rand));
+
+                    // On modifie le token
+                    configs.setToken(token,
+                        // En cas de succes
+                        function (token) {
+                            application.successOutput("OK");
+
+                            res.send(
+                                jsonFormat.format({
+                                    error: false,
+                                    token: token
+                                })
+                            );
+                        },
+                        // En cas d'erreur
+                        function (infos) {
+                            application.errorOutput("ERREUR");
+
+                            res.send(
+                                jsonFormat.format({
+                                    error: true,
+                                    message: infos.message
+                                })
+                            );
+                        }
+                    );
+                },
+                // Le mot de passe est invalide
+                function (infos) {
+                    application.errorOutput("ERREUR");
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: infos.message
+                        })
+                    );
+                }
+            );
+        });
+
+        /*********************/
+        /**    END LOGIN    **/
+        /*********************/
+
 
 
 
