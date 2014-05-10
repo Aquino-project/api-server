@@ -519,6 +519,44 @@ var application = {
 
         /**
          *
+         * Recupere le nombre d'alertes
+         *
+         */
+        app.get('/alerts/count', function(req, res)
+        {
+            application.output("Recuperation du nombre d'alertes...");
+            var alertsModel = require('./lib/models/alerts.js').init(connection);
+
+            alertsModel.getCount(
+                // En cas de succes
+                function (count) {
+                    application.successOutput('OK');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            count: count
+                        })
+                    );
+                },
+
+                // En cas d'echec
+                function (message) {
+                    application.errorOutput('ERREUR');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: message
+                        })
+                    );
+                }
+            );
+
+        });
+
+        /**
+         *
          * Reglage du seuil d'eau
          *
          */
@@ -720,7 +758,7 @@ var application = {
         app.put('/password', function(req, res)
         {
             application.output("Modification du mot de passe...");
-            
+
             var password = req.body.password;
             password = md5(password);
 
@@ -753,7 +791,7 @@ var application = {
         });
 
         /*********************/
-        /**    END ALERTS   **/
+        /**    END APPLI    **/
         /*********************/
 
 
