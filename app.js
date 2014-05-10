@@ -8,7 +8,7 @@ var bodyParser      = require('body-parser');
 var methodOverride  = require('express-method-override');
 var http            = require('http');
 var Curl            = require('curlrequest');
-var md5             = require('md5');
+var md5             = require('MD5');
 var mysql           = require('mysql');
 var colors          = require('colors');
 var querystring     = require('querystring');
@@ -700,6 +700,56 @@ var application = {
                     );
                 }
             );
+        });
+
+        /*********************/
+        /**    END ALERTS   **/
+        /*********************/
+
+
+
+        /*********************/
+        /**   APPLI CONFIG  **/
+        /*********************/
+
+        /**
+         *
+         * Modification du mot de passe
+         *
+         */
+        app.put('/password', function(req, res)
+        {
+            application.output("Modification du mot de passe...");
+            
+            var password = req.body.password;
+            password = md5(password);
+
+            configs.updatePassword(password,
+                // En cas de succes
+                function () {
+                    application.successOutput('OK');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: 'Mot de passe correment modifié'
+                        })
+                    );
+                },
+
+                // En cas d'echec
+                function (message) {
+                    application.errorOutput('ERREUR');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: message
+                        })
+                    );
+                }
+            );
+
         });
 
         /*********************/

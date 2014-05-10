@@ -9,7 +9,7 @@
         "method-override": "*",
         "curlrequest": "*",
         "request": "2.34.0",
-        "md5": "1.0.0",
+        "MD5": "1.0.0",
         "mysql": "*"
     }
 }
