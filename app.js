@@ -356,16 +356,16 @@ var application = {
         {
             application.output('Envoie de la luminosité en cours...');
 
-            var bas = req.body.bas;
-            var haut = req.body.haut;
+            var hour_end = req.body.hour_end;
+            var hour_start = req.body.hour_start;
 
             // On prepare la requete
             var request = Curl.request({
                 method: 'POST',
                 url: aquariumIP +"/light",
                 data: {
-                    "haut": haut,
-                    "bas": bas
+                    "haut": hour_start,
+                    "bas": hour_end
                 },
                 timeout: 30
             });
