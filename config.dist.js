@@ -1,8 +1,18 @@
 module.exports = {
-    
-    host    : 'hote MySQL',
-    user    : 'utilisateur MySQL',
-    password: 'mot de passe MySQL',
-    database: 'base de donnees MySQL'
+
+    mysql   : {
+        host     : 'hote mysql',
+        user     : 'utilisateur mysql',
+        password : 'mot de passe mysql',
+        database : 'base de donnees'
+    },
+
+    mail : {
+        service : 'Gmail',
+        auth    : {
+            user    : 'adresse email',
+            pass    : 'mot de passe'
+        }
+    }
 
 };

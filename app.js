@@ -12,7 +12,9 @@ var md5             = require('MD5');
 var mysql           = require('mysql');
 var colors          = require('colors');
 var querystring     = require('querystring');
+var nodemailer      = require("nodemailer");
 var jsonFormat      = require('./lib/controllers/json.js');
+var globalConfigs   = require('./config.js');
 
 
 /**
@@ -46,10 +48,16 @@ app.use(initHeaders);
 /**
  *
  * CONFIGURARION MYSQL
+ * CONFIGURATION EMAIL
  *
  */
 var connection = mysql.createConnection(
-    require('./config.js')
+    globalConfigs.mysql
+);
+
+var smtpTransport = nodemailer.createTransport(
+    'SMTP',
+    globalConfigs.mail
 );
 
 
@@ -518,7 +526,7 @@ var application = {
          *
          */
         app.post('/alerts', function (req, res)
-        {            
+        {
             application.output('Reception de l\'alerte en cours...');
 
             var titre = req.body.titre;
@@ -540,6 +548,41 @@ var application = {
                             error: false,
                             message: 'Alerte correctement ajoutée'
                         })
+                    );
+
+                    application.output("Recuperation de l'email...");
+
+                    configs.getEmail(
+                        function (email)
+                        {
+                            application.successOutput("OK");
+
+                            // On configure les options mail
+                            var mailOpts = {
+                                to      : email,
+                                subject : "[ERREUR Aquino] "+ titre,
+                                text    : message
+                            };
+
+                            application.output("Envoie de l'email d'alerte...");
+
+                            // On envoie le mail a l'utilisateur
+                            smtpTransport.sendMail(mailOpts, function (error)
+                            {
+                                if (error) {
+                                    application.errorOutput("ERREUR");
+                                    return false;
+                                }
+
+                                application.successOutput("OK");
+                                return true;
+                            });
+                        },
+
+                        function () 
+                        {
+                            application.errorOutput("ERREUR");
+                        }
                     );
                 },
                 
@@ -679,7 +722,7 @@ var application = {
          *
          */
         app.post('/seuils', function (req, res)
-        {            
+        {
             application.output('Envoie du seuil en cours...');
 
             var seuil = req.body.seuil;
@@ -747,7 +790,7 @@ var application = {
          *
          */
         app.put('/email', function (req, res)
-        {            
+        {
             application.output('Envoie de l\'email en cours...');
 
             var email = req.body.email;
@@ -787,7 +830,7 @@ var application = {
          *
          */
         app.get('/seuils', function (req, res)
-        {            
+        {
             application.output('Envoie du seuil en cours...');
 
             var seuilsModel = require('./lib/models/seuils.js').init(connection);
@@ -827,7 +870,7 @@ var application = {
          *
          */
         app.get('/email', function (req, res)
-        {            
+        {
             application.output('Recuperation de l\'email en cours...');
 
             // On ajoute l'alerte a la base de donnees
@@ -905,7 +948,6 @@ var application = {
                     );
                 }
             );
-
         });
 
         /**
@@ -924,7 +966,6 @@ var application = {
                     ip: cameraIP
                 })
             );
-
         });
 
         /*********************/

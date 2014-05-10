@@ -10,6 +10,7 @@
         "curlrequest": "*",
         "request": "2.34.0",
         "MD5": "1.0.0",
-        "mysql": "*"
+        "mysql": "*",
+        "nodemailer": "*"
     }
 }
