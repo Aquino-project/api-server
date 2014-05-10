@@ -557,6 +557,44 @@ var application = {
 
         /**
          *
+         * Recupere les alertes
+         *
+         */
+        app.get('/alerts', function(req, res)
+        {
+            application.output("Recuperation des alertes...");
+            var alertsModel = require('./lib/models/alerts.js').init(connection);
+
+            alertsModel.getAll(
+                // En cas de succes
+                function (alerts) {
+                    application.successOutput('OK');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            alerts: alerts
+                        })
+                    );
+                },
+
+                // En cas d'echec
+                function (message) {
+                    application.errorOutput('ERREUR');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: message
+                        })
+                    );
+                }
+            );
+
+        });
+
+        /**
+         *
          * Reglage du seuil d'eau
          *
          */
