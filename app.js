@@ -643,7 +643,7 @@ var application = {
          * Recupere les alertes
          *
          */
-        app.get('/alerts', function(req, res)
+        app.get('/alerts', this.autorizationCheck, function(req, res)
         {
             application.output("Recuperation des alertes...");
             var alertsModel = require('./lib/models/alerts.js').init(connection);
@@ -999,7 +999,7 @@ var application = {
                 },
                 // Le token est invalide
                 function () {
-                    application.successOutput("ERREUR");
+                    application.errorOutput("ERREUR");
 
                     res.send(
                         jsonFormat.format({
@@ -1045,7 +1045,7 @@ var application = {
                         },
                         // En cas d'erreur
                         function (infos) {
-                            application.errorOutput("ERREUR");
+                            application.errorOutput("ERREUR - "+ infos.message);
 
                             res.send(
                                 jsonFormat.format({
@@ -1058,7 +1058,7 @@ var application = {
                 },
                 // Le mot de passe est invalide
                 function (infos) {
-                    application.errorOutput("ERREUR");
+                    application.errorOutput("ERREUR - "+ infos.message);
 
                     res.send(
                         jsonFormat.format({
@@ -1126,6 +1126,55 @@ var application = {
     {
         console.log(" %s !".inverse.green, message);
         console.log('');
+    },
+
+    /**
+     *
+     * Verifie que le client courant est autorisee a effectuer la requete
+     * @param Request req La requete
+     * @param Response res La reponse
+     * @param string next La suite du programme
+     *
+     */
+    autorizationCheck: function (req, res, next)
+    {
+        application.output("Verification de l'autorisation client...");
+
+        var token = req.query.token;
+
+        if (!token) {
+            application.errorOutput("NON AUTORISE");
+            res.send(
+                jsonFormat.format({
+                    error: true,
+                    message: "Vous n'êtes pas autorisé"
+                })
+            );
+            return false;
+        }
+
+        var configs  = require('./lib/models/configs.js').init(connection);
+
+        configs.isEqualToken(token,
+            // Le token est valide
+            function () {
+                application.successOutput("AUTORISE");
+                next();
+
+                return true;
+            },
+            // Le token est invalide
+            function () {
+                application.errorOutput("NON AUTORISE");
+                res.send(
+                    jsonFormat.format({
+                        error: true,
+                        message: "Vous n'êtes pas autorisé"
+                    })
+                );
+                return false;
+            }
+        );
     }
 
 };
