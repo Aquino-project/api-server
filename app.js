@@ -595,6 +595,46 @@ var application = {
 
         /**
          *
+         * Supprime une alerte
+         *
+         */
+        app.delete('/alerts/:id', function(req, res)
+        {
+            application.output("Recuperation des alertes...");
+            var alertsModel = require('./lib/models/alerts.js').init(connection);
+
+            var id = req.params.id;
+
+            alertsModel.delete(id,
+                // En cas de succes
+                function () {
+                    application.successOutput('OK');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: false,
+                            message: "L'alerte a bien été supprimée"
+                        })
+                    );
+                },
+
+                // En cas d'echec
+                function (message) {
+                    application.errorOutput('ERREUR');
+
+                    res.send(
+                        jsonFormat.format({
+                            error: true,
+                            message: message
+                        })
+                    );
+                }
+            );
+
+        });
+
+        /**
+         *
          * Reglage du seuil d'eau
          *
          */
