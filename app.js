@@ -789,7 +789,7 @@ var application = {
          * Reglage du mail
          *
          */
-        app.put('/email', function (req, res)
+        app.put('/email', this.autorizationCheck, function (req, res)
         {
             application.output('Envoie de l\'email en cours...');
 
