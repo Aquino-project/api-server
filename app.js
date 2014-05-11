@@ -163,7 +163,7 @@ var application = {
          * Ajout d'une heure pour la nourriture
          *
          */
-        app.post('/feed', function (req, res)
+        app.post('/feed', this.autorizationCheck, function (req, res)
         {
             application.output('Ajout d\'une heure de nourrissage en cours...');
 
