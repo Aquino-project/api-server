@@ -5,13 +5,12 @@
  */
 var express         = require('express');
 var bodyParser      = require('body-parser');
-var methodOverride  = require('express-method-override');
+var methodOverride  = require('method-override');
 var http            = require('http');
 var Curl            = require('curlrequest');
 var sha1            = require('sha1');
 var mysql           = require('mysql');
 var colors          = require('colors');
-var querystring     = require('querystring');
 var nodemailer      = require("nodemailer");
 var jsonFormat      = require('./lib/controllers/json.js');
 var globalConfigs   = require('./config.js');

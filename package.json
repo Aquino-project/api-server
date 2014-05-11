@@ -11,6 +11,7 @@
         "request": "2.34.0",
         "sha1": "*",
         "mysql": "*",
-        "nodemailer": "*"
+        "nodemailer": "*",
+        "colors": "*"
     }
 }
