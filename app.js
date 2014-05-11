@@ -317,7 +317,7 @@ var application = {
          * Suppression d'une heure pour la nourriture
          *
          */
-        app.delete('/feed/:hour', function (req, res)
+        app.delete('/feed/:hour', this.autorizationCheck, function (req, res)
         {
             application.output('Suppression d\'une heure de nourrissage en cours...');
 
