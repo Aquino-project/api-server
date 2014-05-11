@@ -523,6 +523,7 @@ var application = {
         /**
          *
          * Quand l'aquarium envoie des alertes
+         * CONTACTE PAR ARDUINO
          *
          */
         app.post('/alerts', function (req, res)
