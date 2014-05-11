@@ -916,7 +916,7 @@ var application = {
          * Modification du mot de passe
          *
          */
-        app.put('/password', function(req, res)
+        app.put('/password', this.autorizationCheck, function(req, res)
         {
             application.output("Modification du mot de passe...");
 
