@@ -829,7 +829,7 @@ var application = {
          * Recuperation du seuil d'eau
          *
          */
-        app.get('/seuils', function (req, res)
+        app.get('/seuils', this.autorizationCheck, function (req, res)
         {
             application.output('Envoie du seuil en cours...');
 
