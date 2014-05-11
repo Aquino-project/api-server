@@ -721,7 +721,7 @@ var application = {
          * Reglage du seuil d'eau
          *
          */
-        app.post('/seuils', function (req, res)
+        app.post('/seuils', this.autorizationCheck, function (req, res)
         {
             application.output('Envoie du seuil en cours...');
 
