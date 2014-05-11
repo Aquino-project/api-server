@@ -605,7 +605,7 @@ var application = {
          * Recupere le nombre d'alertes
          *
          */
-        app.get('/alerts/count', function(req, res)
+        app.get('/alerts/count', this.autorizationCheck, function(req, res)
         {
             application.output("Recuperation du nombre d'alertes...");
             var alertsModel = require('./lib/models/alerts.js').init(connection);
