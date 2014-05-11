@@ -869,7 +869,7 @@ var application = {
          * Recuperation du mail
          *
          */
-        app.get('/email', function (req, res)
+        app.get('/email', this.autorizationCheck, function (req, res)
         {
             application.output('Recuperation de l\'email en cours...');
 
