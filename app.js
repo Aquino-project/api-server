@@ -955,7 +955,7 @@ var application = {
          * Recuperation de l'IP de la camera
          *
          */
-        app.get('/camera/address', function(req, res)
+        app.get('/camera/address', this.autorizationCheck, function(req, res)
         {
             application.output("Envoie de l'ip de la camera...");
             application.successOutput("OK");
