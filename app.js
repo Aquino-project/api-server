@@ -400,7 +400,7 @@ var application = {
          * Reglage des heures d'éclairage
          *
          */
-        app.put('/light', function (req, res)
+        app.put('/light', this.autorizationCheck, function (req, res)
         {
             application.output('Envoie des heures en cours...');
 
