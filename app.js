@@ -472,7 +472,7 @@ var application = {
          * Recuperation des heures d'eclairages
          *
          */
-        app.get('/light', function (req, res)
+        app.get('/light', this.autorizationCheck, function (req, res)
         {
             application.output('Envoie des heures en cours...');
 
