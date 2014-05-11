@@ -681,7 +681,7 @@ var application = {
          * Supprime une alerte
          *
          */
-        app.delete('/alerts/:id', function(req, res)
+        app.delete('/alerts/:id', this.autorizationCheck, function(req, res)
         {
             application.output("Recuperation des alertes...");
             var alertsModel = require('./lib/models/alerts.js').init(connection);
