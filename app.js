@@ -276,7 +276,7 @@ var application = {
          * Recuperes la prochaine heure de nourrissage
          *
          */
-        app.get('/feed/hour/next', function (req, res)
+        app.get('/feed/hour/next', this.autorizationCheck, function (req, res)
         {
             application.output('Recuperation de la prochaine heure de nourrissage en cours...');
 
