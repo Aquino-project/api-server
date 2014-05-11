@@ -25,6 +25,7 @@ CREATE TABLE `configs` (
   `password` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
   `camera` varchar(100) NOT NULL,
+  `token` varchar(255) NOT NULL,
   KEY `camera` (`camera`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -32,7 +33,7 @@ CREATE TABLE `configs` (
 --  Records of `configs`
 -- ----------------------------
 BEGIN;
-INSERT INTO `configs` VALUES ('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'romain.addweb@gmail.com', '192.168.0.200');
+INSERT INTO `configs` VALUES ('a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', 'romain.addweb@gmail.com', '192.168.0.200', '');
 COMMIT;
 
 -- ----------------------------
