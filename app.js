@@ -236,7 +236,7 @@ var application = {
          * Recuperes les heures deja existantes
          *
          */
-        app.get('/feed/hours', function (req, res)
+        app.get('/feed/hours', this.autorizationCheck, function (req, res)
         {
             application.output('Recuperation des heures de nourrissage en cours...');
 
