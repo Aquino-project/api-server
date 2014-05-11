@@ -122,7 +122,7 @@ var application = {
          * Don de la nourriture maintenant
          *
          */
-        app.get('/feed/now', function (req, res)
+        app.get('/feed/now', this.autorizationCheck, function (req, res)
         {
             application.output('Don de la nourriture en cours...');
 
